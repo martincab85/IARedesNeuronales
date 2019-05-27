@@ -128,19 +128,10 @@ public void ortogonal(int vector1[], int vector2[]){
                 ortogonal = vector1[i]*vector2[i]+ortogonal;
             }
             if(ortogonal<0){
-                porcentajeOrtogonal(ortogonal);
-//                System.out.println("más de 50% de diferencia entre vectores AR y RR");System.out.println("");
+                System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
             }else{
-                porcentajeOrtogonal(ortogonal);
-//                System.out.println("menos de 50% de diferencia entre vectores AR y RR");System.out.println("");
+                System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");;
         }
     }
-    public void porcentajeOrtogonal(int ortogonal){
-        if(ortogonal<0){
-            System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
-        }
-        if(ortogonal>0){
-            System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
-        }
-    }
+    
 }
