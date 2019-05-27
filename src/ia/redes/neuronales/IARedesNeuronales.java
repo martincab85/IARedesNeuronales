@@ -10,37 +10,17 @@ public class IARedesNeuronales {
     public static void main(String[] args) {
         //entrenamiento
             //perfiles
+            IARedesNeuronales objetoClase = new IARedesNeuronales();
             List<int[]> lista= new ArrayList();
+            
+//            recibirPerfiles(int perfilAR[],int perfilRR[][],int perfilNR[][]);
             int perfilAR[]  = { 1, 1, 1, 1, 1, 1,-1,-1,-1, 1, 1, 1,-1, 1, 1, 1,-1,-1, 1};
             int perfilRR[]  = { 1,-1,-1, 1, 1,-1,-1,-1, 1,-1, 1,-1,-1,-1, 1,-1, 1, 1,-1};
             int perfilNR[]  = {-1,-1,-1,-1,-1,-1, 1, 1, 1, 1,-1, 1, 1,-1,-1,-1,-1,-1,-1};
-            int ortogonal = 0;
-            for(int i=0;i<19;i++){
-                ortogonal = perfilAR[i]*perfilRR[i]+ortogonal;
-            }
-            if(ortogonal<0){
-                 System.out.println("más de 50% de diferencia entre vectores AR y RR");System.out.println("");
-            }else{
-                 System.out.println("menos de 50% de diferencia entre vectores AR y RR");System.out.println("");
-            }
-            ortogonal = 0;
-            for(int i=0;i<19;i++){
-                ortogonal = perfilAR[i]*perfilNR[i]+ortogonal;
-            }
-            if(ortogonal<0){
-                 System.out.println("más de 50% de diferencia entre vectores AR y NR");System.out.println("");
-            }else{
-                 System.out.println("menos de 50% de diferencia entre vectores AR y NR");System.out.println("");
-            }
-            ortogonal = 0;
-            for(int i=0;i<19;i++){
-                ortogonal = perfilNR[i]*perfilRR[i]+ortogonal;
-            }
-            if(ortogonal<0){
-                 System.out.println("más de 50% de diferencia entre vectores NR y RR");System.out.println("");
-            }else{
-                 System.out.println("menos de 50% de diferencia entre vectores NR y RR");System.out.println("");
-            }
+            
+            objetoClase.ortogonal(perfilAR, perfilRR);
+            objetoClase.ortogonal(perfilAR, perfilNR);
+            objetoClase.ortogonal(perfilRR, perfilNR);
             //aprendizaje
             int matrizPerfiles[][] = new int[19][19];
             for(int i = 0;i<19;i++){
@@ -65,34 +45,13 @@ public class IARedesNeuronales {
 //            int entradaPerfil[]  = { 1, 1, 1, 1, 1, 1,-1,-1,-1, 1, 1, 1,-1, 1, 1, 1,-1,-1, 1};
 //            int entradaPerfil[]  = { 1,-1,-1, 1, 1,-1,-1,-1, 1,-1, 1,-1,-1,-1, 1,-1, 1, 1,-1};
 //            int entradaPerfil[]  = {-1,-1,-1,-1,-1,-1, 1, 1, 1, 1,-1, 1, 1,-1,-1,-1,-1,-1,-1};                     
-              int entradaPerfil[]  = {-1, 1,-1, 1,-1, 1,-1,-1,-1, 1,-1, 1, 1,-1,-1,-1,-1,-1,-1};
-            ortogonal = 0;
-            for(int i=0;i<19;i++){
-                ortogonal = entradaPerfil[i]*perfilRR[i]+ortogonal;
-            }
-            if(ortogonal<0){
-                 System.out.println("más de 50% de diferencia entre vectores perfilEntrada y RR");System.out.println("");
-            }else{
-                 System.out.println("menos de 50% de diferencia entre vectores perfilEntrada y RR");System.out.println("");
-            }
-            ortogonal = 0;
-            for(int i=0;i<19;i++){
-                ortogonal = perfilAR[i]*entradaPerfil[i]+ortogonal;
-            }
-            if(ortogonal<0){
-                 System.out.println("más de 50% de diferencia entre vectores AR y perfilEntrada");System.out.println("");
-            }else{
-                 System.out.println("menos de 50% de diferencia entre vectores AR y perfilEntrada");System.out.println("");
-            }
-            ortogonal = 0;
-            for(int i=0;i<19;i++){
-                ortogonal = entradaPerfil[i]*perfilNR[i]+ortogonal;
-            }
-            if(ortogonal<0){
-                 System.out.println("más de 50% de diferencia entre vectores perfilEntrada y NR");System.out.println("");
-            }else{
-                 System.out.println("menos de 50% de diferencia entre vectores perfilEntrada y NR");System.out.println("");
-            }
+              int entradaPerfil[]  = {-1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,-1,-1,-1,-1, 1, 1}; 
+            
+//            recibirEntradaPerfil(int entradaPerfil[]);  
+              
+            objetoClase.ortogonal(perfilAR, entradaPerfil);
+            objetoClase.ortogonal(entradaPerfil, perfilNR);
+            objetoClase.ortogonal(perfilRR, entradaPerfil);
             
             System.out.println("vector de entrada ");
             System.out.println("");System.out.println("");
@@ -163,5 +122,25 @@ public class IARedesNeuronales {
                 System.out.println("no se pudo asociar a un perfil ");
             }
     }
-    
+public void ortogonal(int vector1[], int vector2[]){
+        int ortogonal = 0;    
+        for(int i=0;i<19;i++){
+                ortogonal = vector1[i]*vector2[i]+ortogonal;
+            }
+            if(ortogonal<0){
+                porcentajeOrtogonal(ortogonal);
+//                System.out.println("más de 50% de diferencia entre vectores AR y RR");System.out.println("");
+            }else{
+                porcentajeOrtogonal(ortogonal);
+//                System.out.println("menos de 50% de diferencia entre vectores AR y RR");System.out.println("");
+        }
+    }
+    public void porcentajeOrtogonal(int ortogonal){
+        if(ortogonal<0){
+            System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
+        }
+        if(ortogonal>0){
+            System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
+        }
+    }
 }
