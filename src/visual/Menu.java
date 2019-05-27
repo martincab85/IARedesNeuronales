@@ -1,19 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package visual;
 
-/**
- *
- * @author Pablo
- */
+package visual;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 public class Menu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Menu
-     */
+    ControladoraVisual miVisual = new ControladoraVisual();
+    
+    
+    
     public Menu() {
         initComponents();
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -38,9 +36,73 @@ public class Menu extends javax.swing.JFrame {
         }
         //</editor-fold>
         this.setLocationRelativeTo(null);
-        this.setTitle("Determinación de Perfiles de Trabajo");
+        setTitle("Determinación de Perfiles de Trabajo");
+        cargarEncabezados();
         //this.setSize(960, 640);
     }
+                
+    public static void main(String[] args) {
+        Menu miMenu = new Menu();
+        miMenu.setVisible(true);
+    }
+    public void cargarEncabezados(){
+        
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblCaracteristicas.getModel();
+        modeloTabla.addColumn("Característica");
+        modeloTabla.addColumn("Altamente Recomendable");
+        modeloTabla.addColumn("Recomendable con reservas");
+        modeloTabla.addColumn("No recomendable");
+        
+        String[] caracteristicas = miVisual.obtenerNombreCaracteristicas();
+        Object[] fila = new Object[4];
+        
+        for(int i = 0; i < caracteristicas.length; i++){
+            fila[0] = caracteristicas[i];
+            modeloTabla.addRow(fila);
+        }
+    }
+    
+    public void enviarPerfilesEstablecidos(){
+        if(!verificarCampos()){
+            List<int[]> lista= new ArrayList();
+            DefaultTableModel modeloTabla = (DefaultTableModel) tblCaracteristicas.getModel();
+
+            int[] perfilAR = new int[19];
+            int[] perfilRR = new int[19];
+            int[] perfilNR = new int[19];
+
+
+            for(int i = 1; i < 4; i++ ){    // columna i
+                for(int j = 0; j < 19; j++){    // fila j
+                    if(i == 1){ // si esta en la columna de AR
+                        perfilAR[j] = Integer.parseInt((String)modeloTabla.getValueAt(j, i)); // toda esa conversion para poder almacenar, unica forma que encontre 
+
+                    }else if(i == 2){ // si esta en la columna de RR
+                        perfilRR[j] = Integer.parseInt((String)modeloTabla.getValueAt(j, i));
+
+                    }else{
+                        perfilNR[j] = Integer.parseInt((String)modeloTabla.getValueAt(j, i));
+
+                    }
+                }
+        }
+           miVisual.enviarPerfiles(perfilAR, perfilRR, perfilNR);
+        }else{
+        JOptionPane.showMessageDialog(null, "Complete todos los campos de las características de selección");
+        }
+        }
+        
+        public boolean verificarCampos(){
+           DefaultTableModel modeloTabla = (DefaultTableModel) tblCaracteristicas.getModel();
+           boolean faltante = false;
+         
+            for(int i = 1; i < 4; i++){
+                for(int j = 0; j < 19; j++){
+                    if(modeloTabla.getValueAt(j, i) == null || modeloTabla.getValueAt(j, i).equals("")) faltante = true;
+                }
+            }
+            return faltante;
+        }
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code.
@@ -52,32 +114,31 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox8 = new javax.swing.JCheckBox();
-        jCheckBox9 = new javax.swing.JCheckBox();
-        jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
+        chkMatematica = new javax.swing.JCheckBox();
+        chkQuimica = new javax.swing.JCheckBox();
+        chkFisica = new javax.swing.JCheckBox();
+        chkProgramacion = new javax.swing.JCheckBox();
+        chkElectronica = new javax.swing.JCheckBox();
+        chkSimulacion = new javax.swing.JCheckBox();
+        chkHistoria = new javax.swing.JCheckBox();
+        chkCienciasSociales = new javax.swing.JCheckBox();
+        chkBiologia = new javax.swing.JCheckBox();
+        chkLiteratura = new javax.swing.JCheckBox();
+        chkMetodosNumericos = new javax.swing.JCheckBox();
+        chkIngles = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
-        jCheckBox13 = new javax.swing.JCheckBox();
-        jCheckBox14 = new javax.swing.JCheckBox();
-        jCheckBox15 = new javax.swing.JCheckBox();
+        chkBuenaComunicacion = new javax.swing.JCheckBox();
+        chkBuenaDiccion = new javax.swing.JCheckBox();
+        chkClaridadConceptos = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
-        jCheckBox16 = new javax.swing.JCheckBox();
-        jCheckBox17 = new javax.swing.JCheckBox();
-        jCheckBox18 = new javax.swing.JCheckBox();
-        jCheckBox19 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        chkBuenaSintaxis = new javax.swing.JCheckBox();
+        chkBuenaCaligrafia = new javax.swing.JCheckBox();
+        chkProlijidad = new javax.swing.JCheckBox();
+        chkPorcentajeRtas = new javax.swing.JCheckBox();
+        btnEvaluarPerfil = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCaracteristicas = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,39 +146,39 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Promedios superiores o iguales a 8", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jCheckBox1.setText("Matemática");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        chkMatematica.setText("Matemática");
+        chkMatematica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                chkMatematicaActionPerformed(evt);
             }
         });
 
-        jCheckBox2.setText("Química");
+        chkQuimica.setText("Química");
 
-        jCheckBox3.setText("Física");
+        chkFisica.setText("Física");
 
-        jCheckBox4.setText("Programación");
+        chkProgramacion.setText("Programación");
 
-        jCheckBox5.setText("Electrónica");
+        chkElectronica.setText("Electrónica");
 
-        jCheckBox6.setText("Simulación");
+        chkSimulacion.setText("Simulación");
 
-        jCheckBox7.setText("Historia");
+        chkHistoria.setText("Historia");
 
-        jCheckBox8.setText("Ciencias Sociales");
+        chkCienciasSociales.setText("Ciencias Sociales");
 
-        jCheckBox9.setText("Biología");
-        jCheckBox9.addActionListener(new java.awt.event.ActionListener() {
+        chkBiologia.setText("Biología");
+        chkBiologia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox9ActionPerformed(evt);
+                chkBiologiaActionPerformed(evt);
             }
         });
 
-        jCheckBox10.setText("Literatura");
+        chkLiteratura.setText("Literatura");
 
-        jCheckBox11.setText("Métodos Numéricos");
+        chkMetodosNumericos.setText("Métodos Numéricos");
 
-        jCheckBox12.setText("Inglés");
+        chkIngles.setText("Inglés");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -128,25 +189,25 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox3)
-                            .addComponent(jCheckBox2)
-                            .addComponent(jCheckBox1))
+                            .addComponent(chkFisica)
+                            .addComponent(chkQuimica)
+                            .addComponent(chkMatematica))
                         .addGap(28, 28, 28)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox7)
-                            .addComponent(jCheckBox9)
-                            .addComponent(jCheckBox8))
+                            .addComponent(chkHistoria)
+                            .addComponent(chkBiologia)
+                            .addComponent(chkCienciasSociales))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox4)
-                            .addComponent(jCheckBox5)
-                            .addComponent(jCheckBox6))
+                            .addComponent(chkProgramacion)
+                            .addComponent(chkElectronica)
+                            .addComponent(chkSimulacion))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox10)
-                            .addComponent(jCheckBox11)
-                            .addComponent(jCheckBox12))
+                            .addComponent(chkLiteratura)
+                            .addComponent(chkMetodosNumericos)
+                            .addComponent(chkIngles))
                         .addGap(41, 41, 41))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -154,38 +215,38 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox7))
+                    .addComponent(chkMatematica)
+                    .addComponent(chkHistoria))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox8))
+                    .addComponent(chkQuimica)
+                    .addComponent(chkCienciasSociales))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox9))
+                    .addComponent(chkFisica)
+                    .addComponent(chkBiologia))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jCheckBox10))
+                    .addComponent(chkProgramacion)
+                    .addComponent(chkLiteratura))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox11))
+                    .addComponent(chkElectronica)
+                    .addComponent(chkMetodosNumericos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jCheckBox12))
+                    .addComponent(chkSimulacion)
+                    .addComponent(chkIngles))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Entrevista", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jCheckBox13.setText("Buena comunicación");
+        chkBuenaComunicacion.setText("Buena comunicación");
 
-        jCheckBox14.setText("Buena dicción");
+        chkBuenaDiccion.setText("Buena dicción");
 
-        jCheckBox15.setText("Claridad de conceptos");
+        chkClaridadConceptos.setText("Claridad de conceptos");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -194,32 +255,32 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox13)
-                    .addComponent(jCheckBox14)
-                    .addComponent(jCheckBox15))
+                    .addComponent(chkBuenaComunicacion)
+                    .addComponent(chkBuenaDiccion)
+                    .addComponent(chkClaridadConceptos))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox13)
+                .addComponent(chkBuenaComunicacion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox14)
+                .addComponent(chkBuenaDiccion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox15)
+                .addComponent(chkClaridadConceptos)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Evaluación escrita", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jCheckBox16.setText("Buena sintaxis");
+        chkBuenaSintaxis.setText("Buena sintaxis");
 
-        jCheckBox17.setText("Buena caligrafía");
+        chkBuenaCaligrafia.setText("Buena caligrafía");
 
-        jCheckBox18.setText("Prolijidad");
+        chkProlijidad.setText("Prolijidad");
 
-        jCheckBox19.setText("Alto porcentaje de respuestas");
+        chkPorcentajeRtas.setText("Alto porcentaje de respuestas");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -228,27 +289,32 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox16)
-                    .addComponent(jCheckBox17)
-                    .addComponent(jCheckBox18)
-                    .addComponent(jCheckBox19))
+                    .addComponent(chkBuenaSintaxis)
+                    .addComponent(chkBuenaCaligrafia)
+                    .addComponent(chkProlijidad)
+                    .addComponent(chkPorcentajeRtas))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox16)
+                .addComponent(chkBuenaSintaxis)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox17)
+                .addComponent(chkBuenaCaligrafia)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox18)
+                .addComponent(chkProlijidad)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox19)
+                .addComponent(chkPorcentajeRtas)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Evaluar perfil");
+        btnEvaluarPerfil.setText("Evaluar perfil");
+        btnEvaluarPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEvaluarPerfilActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -258,7 +324,7 @@ public class Menu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnEvaluarPerfil)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,17 +343,13 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                .addComponent(btnEvaluarPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Aprendizaje de perfiles", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Características de selección requeridas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
 
-        jLabel1.setText("jLabel1");
-
-        jLabel2.setText("jLabel2");
-
-        jLabel3.setText("jLabel3");
+        jScrollPane1.setViewportView(tblCaracteristicas);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -295,33 +357,26 @@ public class Menu extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel1)
-                .addGap(40, 40, 40)
-                .addComponent(jLabel2)
-                .addGap(38, 38, 38)
-                .addComponent(jLabel3)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -330,20 +385,49 @@ public class Menu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void chkMatematicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMatematicaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_chkMatematicaActionPerformed
 
-    private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
+    private void chkBiologiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBiologiaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox9ActionPerformed
+    }//GEN-LAST:event_chkBiologiaActionPerformed
+
+    private void btnEvaluarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEvaluarPerfilActionPerformed
+
+        int[] valoresPerfil = new int[19];
+        
+        if(chkMatematica.isSelected()){ valoresPerfil[0] = 1; }else{ valoresPerfil[0] = -1; }
+        if(chkQuimica.isSelected()){ valoresPerfil[1] = 1; }else{ valoresPerfil[1] = -1; }
+        if(chkFisica.isSelected()){ valoresPerfil[2] = 1; }else{ valoresPerfil[2] = -1; }
+        if(chkProgramacion.isSelected()){ valoresPerfil[3] = 1; }else{ valoresPerfil[3] = -1; }
+        if(chkElectronica.isSelected()){ valoresPerfil[4] = 1; }else{ valoresPerfil[4] = -1; }
+        if(chkSimulacion.isSelected()){ valoresPerfil[5] = 1; }else{ valoresPerfil[5] = -1; }
+        if(chkHistoria.isSelected()){ valoresPerfil[6] = 1; }else{ valoresPerfil[6] = -1; }
+        if(chkCienciasSociales.isSelected()){ valoresPerfil[7] = 1; }else{ valoresPerfil[7] = -1; }
+        if(chkBiologia.isSelected()){ valoresPerfil[8] = 1; }else{ valoresPerfil[8] = -1; }
+        if(chkLiteratura.isSelected()){ valoresPerfil[9] = 1; }else{ valoresPerfil[9] = -1; }
+        if(chkMetodosNumericos.isSelected()){ valoresPerfil[10] = 1; }else{ valoresPerfil[10] = -1; }
+        if(chkIngles.isSelected()){ valoresPerfil[11] = 1; }else{ valoresPerfil[11] = -1; }
+        if(chkBuenaComunicacion.isSelected()){ valoresPerfil[12] = 1; }else{ valoresPerfil[12] = -1; }
+        if(chkBuenaDiccion.isSelected()){ valoresPerfil[13] = 1; }else{ valoresPerfil[13] = -1; }
+        if(chkClaridadConceptos.isSelected()){ valoresPerfil[14] = 1; }else{ valoresPerfil[14] = -1; }
+        if(chkBuenaSintaxis.isSelected()){ valoresPerfil[15] = 1; }else{ valoresPerfil[15] = -1; }
+        if(chkBuenaCaligrafia.isSelected()){ valoresPerfil[16] = 1; }else{ valoresPerfil[16] = -1; }
+        if(chkProlijidad.isSelected()){ valoresPerfil[17] = 1; }else{ valoresPerfil[17] = -1; }
+        if(this.chkPorcentajeRtas.isSelected()){ valoresPerfil[18] = 1; }else{ valoresPerfil[18] = -1; }
+        
+        
+        miVisual.obtenerPerfil(valoresPerfil); // envia el perfil a evaluar
+        
+        enviarPerfilesEstablecidos(); // envia los 3 perfiles a comparar
+    }//GEN-LAST:event_btnEvaluarPerfilActionPerformed
 
     /**
      * @param args the command line arguments
@@ -351,33 +435,32 @@ public class Menu extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
-    private javax.swing.JCheckBox jCheckBox13;
-    private javax.swing.JCheckBox jCheckBox14;
-    private javax.swing.JCheckBox jCheckBox15;
-    private javax.swing.JCheckBox jCheckBox16;
-    private javax.swing.JCheckBox jCheckBox17;
-    private javax.swing.JCheckBox jCheckBox18;
-    private javax.swing.JCheckBox jCheckBox19;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox8;
-    private javax.swing.JCheckBox jCheckBox9;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton btnEvaluarPerfil;
+    private javax.swing.JCheckBox chkBiologia;
+    private javax.swing.JCheckBox chkBuenaCaligrafia;
+    private javax.swing.JCheckBox chkBuenaComunicacion;
+    private javax.swing.JCheckBox chkBuenaDiccion;
+    private javax.swing.JCheckBox chkBuenaSintaxis;
+    private javax.swing.JCheckBox chkCienciasSociales;
+    private javax.swing.JCheckBox chkClaridadConceptos;
+    private javax.swing.JCheckBox chkElectronica;
+    private javax.swing.JCheckBox chkFisica;
+    private javax.swing.JCheckBox chkHistoria;
+    private javax.swing.JCheckBox chkIngles;
+    private javax.swing.JCheckBox chkLiteratura;
+    private javax.swing.JCheckBox chkMatematica;
+    private javax.swing.JCheckBox chkMetodosNumericos;
+    private javax.swing.JCheckBox chkPorcentajeRtas;
+    private javax.swing.JCheckBox chkProgramacion;
+    private javax.swing.JCheckBox chkProlijidad;
+    private javax.swing.JCheckBox chkQuimica;
+    private javax.swing.JCheckBox chkSimulacion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblCaracteristicas;
     // End of variables declaration//GEN-END:variables
 }
