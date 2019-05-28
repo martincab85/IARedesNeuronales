@@ -4,32 +4,21 @@ package ia.redes.neuronales;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import visual.Menu;
+import javax.swing.table.DefaultTableModel;
 
 public class IARedesNeuronales {    
     List<int[]> lista= new ArrayList();
-    int entradaPerfil[];
-    int perfilAR[];
-    int perfilRR[];
-    int perfilNR[];
-    int matrizPerfiles[][] = new int[19][19]; 
-    IARedesNeuronales objetoClase = new IARedesNeuronales();       
+    int entradaPerfil[] = new int[19];
+    int perfilAR[] = new int[19];
+    int perfilRR[] = new int[19];
+    int perfilNR[] = new int[19];
+    int matrizPerfiles[][] = new int[19][19];      
     
-    public void ortogonal(int vector1[], int vector2[]){
-        int ortogonal = 0;    
-        for(int i=0;i<19;i++){
-                ortogonal = vector1[i]*vector2[i]+ortogonal;
-            }
-            if(ortogonal<0){
-                System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
-            }else{
-                System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
-        }
-    }
     
     public void obtenerPerfil(int[] entradaPerfil){
         //vector de entrada
         this.entradaPerfil = entradaPerfil;
+        IARedesNeuronales objetoClase = new IARedesNeuronales();
         System.out.println("vector de entrada");
             System.out.println("");System.out.println("");
             for(int i=0;i<19;i++){
@@ -37,9 +26,16 @@ public class IARedesNeuronales {
             }
             System.out.println("");System.out.println("");
             
+            System.out.println("perfilAR con entradaPerfil");System.out.println("");
+            objetoClase.ortogonal(perfilAR, entradaPerfil);
+            System.out.println("perfilRR con entradaPerfil");System.out.println("");
+            objetoClase.ortogonal(perfilRR, entradaPerfil);
+            System.out.println("perfilNR con entradaPerfil");System.out.println("");
+            objetoClase.ortogonal(entradaPerfil, perfilNR);
+            
             int acumulador;
             int iteracion = 0;
-            lista.add(entradaPerfil);
+//            lista.add(entradaPerfil);
             boolean bandera = false;
             boolean reconocio = false;
             while(bandera==false){
@@ -58,10 +54,6 @@ public class IARedesNeuronales {
                     if(acumulador < 0){
                         auxEntradaPerfil [i] = -1;   
                     }
-                    //mas que nada para verlo
-//                    if(acumulador == 0){
-//                        auxEntradaPerfil [i] = entradaPerfil [i];   
-//                    }
                     System.out.print(auxEntradaPerfil[i]+"\t");
                 }
                 System.out.println("");System.out.println("");
@@ -103,12 +95,17 @@ public class IARedesNeuronales {
     }
 
     public void recibirPerfiles(int[] perfilAR, int[] perfilRR, int[] perfilNR) {
+        
+        IARedesNeuronales objetoClase = new IARedesNeuronales();  
         this.perfilAR = perfilAR;
-        this.perfilAR = perfilRR;
-        this.perfilAR = perfilNR;
-        objetoClase.ortogonal(perfilAR, entradaPerfil);
-        objetoClase.ortogonal(entradaPerfil, perfilNR);
-        objetoClase.ortogonal(perfilRR, entradaPerfil);
+        this.perfilRR = perfilRR;
+        this.perfilNR = perfilNR;
+        System.out.println("perfilAR con perfilRR");System.out.println("");
+        objetoClase.ortogonal(perfilAR, perfilRR);
+        System.out.println("perfilAR con perfilNR");System.out.println("");
+        objetoClase.ortogonal(perfilAR, perfilNR);
+        System.out.println("perfilRR con perfilNR");System.out.println("");
+        objetoClase.ortogonal(perfilRR, perfilNR);
         
         //aprendizaje 
         for(int i = 0;i<19;i++){
@@ -127,7 +124,18 @@ public class IARedesNeuronales {
             System.out.println("");System.out.println("");
         }
     }
-
+    public void ortogonal(int vector1[], int vector2[]){
+        int ortogonal = 0;    
+        for(int i=0;i<19;i++){
+                ortogonal = vector1[i]*vector2[i]+ortogonal;
+            }
+            if(ortogonal<0){
+                System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
+            }else{
+                System.out.println("porcentaje de datos iguales %"+(((19+ortogonal)/2)*100)/19);System.out.println("");
+        }
+    }
+    
     public String[] obtenerNombreCaracteristicas() {
         String[] caracteristicas = new String[19];
         caracteristicas[0] = "Matemática";
@@ -152,5 +160,25 @@ public class IARedesNeuronales {
         
         return caracteristicas;
     }
-    
+      public void obtenerValoresIniciales(DefaultTableModel modeloTabla){
+
+        
+        String entradaPerfilAR[]  = {"1", "1", "1", "1", "1", "1","-1","-1","-1", "1", "1", "1","-1", "1", "1", "1","-1","-1", "1"};
+        String entradaPerfilRR[]  = { "1","-1","-1", "1", "1","-1","-1","-1", "1","-1", "1","-1","-1","-1", "1","-1", "1","1","-1"};
+        String entradaPerfilNR[]  = {"-1","-1","-1","-1","-1","-1","1", "1", "1", "1","-1", "1", "1","-1","-1","-1","-1","-1","-1"};  
+
+        
+        for (int i = 0; i < 19; i++) {
+            
+                modeloTabla.setValueAt(entradaPerfilAR[i], i, 1);
+                modeloTabla.setValueAt(entradaPerfilRR[i], i, 2);
+                modeloTabla.setValueAt(entradaPerfilNR[i], i, 3);
+            }
+
+             
+    }
+
+    public void limpiarLista() {
+        lista.clear();
+    }
 }

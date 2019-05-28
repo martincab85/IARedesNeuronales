@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class Menu extends javax.swing.JFrame {
 
     ControladoraVisual miVisual = new ControladoraVisual();
@@ -38,13 +37,15 @@ public class Menu extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setTitle("Determinación de Perfiles de Trabajo");
         cargarEncabezados();
+        obtenerValoresIniciales();
         //this.setSize(960, 640);
     }
-                
+    
     public static void main(String[] args) {
         Menu miMenu = new Menu();
         miMenu.setVisible(true);
     }
+    
     public void cargarEncabezados(){
         
         DefaultTableModel modeloTabla = (DefaultTableModel) tblCaracteristicas.getModel();
@@ -62,6 +63,11 @@ public class Menu extends javax.swing.JFrame {
         }
     }
     
+    public void obtenerValoresIniciales(){
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblCaracteristicas.getModel();
+        miVisual.obtenerValoresIniciales(modeloTabla);
+    }
+    
     public void enviarPerfilesEstablecidos(){
         if(!verificarCampos()){
             List<int[]> lista= new ArrayList();
@@ -76,7 +82,7 @@ public class Menu extends javax.swing.JFrame {
                 for(int j = 0; j < 19; j++){    // fila j
                     if(i == 1){ // si esta en la columna de AR
                         perfilAR[j] = Integer.parseInt((String)modeloTabla.getValueAt(j, i)); // toda esa conversion para poder almacenar, unica forma que encontre 
-
+                            
                     }else if(i == 2){ // si esta en la columna de RR
                         perfilRR[j] = Integer.parseInt((String)modeloTabla.getValueAt(j, i));
 
@@ -139,6 +145,7 @@ public class Menu extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCaracteristicas = new javax.swing.JTable();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -325,7 +332,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnEvaluarPerfil)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 645, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -337,19 +344,26 @@ public class Menu extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEvaluarPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEvaluarPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Características de selección requeridas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
 
         jScrollPane1.setViewportView(tblCaracteristicas);
+
+        btnLimpiar.setText("Limpiar valores");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -357,35 +371,45 @@ public class Menu extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 749, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnLimpiar)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLimpiar)
+                .addGap(7, 7, 7))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -400,7 +424,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_chkBiologiaActionPerformed
 
     private void btnEvaluarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEvaluarPerfilActionPerformed
-
+        miVisual.limpiarLista(); // limpia lista por si se prueba nuevo vector
         int[] valoresPerfil = new int[19];
         
         if(chkMatematica.isSelected()){ valoresPerfil[0] = 1; }else{ valoresPerfil[0] = -1; }
@@ -424,10 +448,20 @@ public class Menu extends javax.swing.JFrame {
         if(this.chkPorcentajeRtas.isSelected()){ valoresPerfil[18] = 1; }else{ valoresPerfil[18] = -1; }
         
         
+        enviarPerfilesEstablecidos(); // envia los 3 perfiles a comparar
         miVisual.obtenerPerfil(valoresPerfil); // envia el perfil a evaluar
         
-        enviarPerfilesEstablecidos(); // envia los 3 perfiles a comparar
     }//GEN-LAST:event_btnEvaluarPerfilActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblCaracteristicas.getModel();
+        
+        for(int i = 1; i < 4; i++){
+            for(int j = 0; j < 19; j++){
+                modeloTabla.setValueAt("", j, i);
+            }
+        }
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -436,6 +470,7 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEvaluarPerfil;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JCheckBox chkBiologia;
     private javax.swing.JCheckBox chkBuenaCaligrafia;
     private javax.swing.JCheckBox chkBuenaComunicacion;
